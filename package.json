@@ -1,0 +1,31 @@
+{
+  "name": "ferramenta-de-selecao-cursinho-mtst",
+  "version": "0.0.1",
+  "description": "Ferramenta de auxílio de seleção de inscritos para os cursinhos do MTST.",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
+    "@mapbox/search-js-react": "^1.0.0",
+    "@googlemaps/js-api-loader": "^1.16.8"
+  },
+  "devDependencies": {
+    "vite": "^4.0.0",
+    "@vitejs/plugin-react": "^4.0.3"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead"
+  ],
+  "engines": {
+    "node": "24.x"
+  }
+}
