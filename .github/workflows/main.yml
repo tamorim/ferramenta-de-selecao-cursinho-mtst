@@ -2,7 +2,7 @@ jobs:
   # Build job
   build:
    # Specify runner +  build & upload the static files as an artifact
-    environment: gh-pages
+    environment: github-pages
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
