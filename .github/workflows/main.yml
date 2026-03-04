@@ -3,7 +3,7 @@ jobs:
   build:
    # Specify runner +  build & upload the static files as an artifact
     environment: gh-pages
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2
@@ -36,7 +36,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     # Specify runner + deployment step
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
