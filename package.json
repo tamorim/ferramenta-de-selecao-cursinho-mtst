@@ -6,9 +6,9 @@
   "private": true,
   "main": "server.js",
   "scripts": {
-    "start": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
+    "start": "npx vite",
+    "build": "npx vite build",
+    "serve": "npx vite preview"
   },
   "dependencies": {
     "react": "^18.2.0",
