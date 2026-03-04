@@ -1,6 +1,16 @@
 import { TRANSPORTATIONS } from "../constants";
 
-export default function Transportation({ value, onChange }) {
+import type { ChangeEvent } from "react";
+
+type TransportationProps = {
+  value: string;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+};
+
+export default function Transportation({
+  value,
+  onChange,
+}: TransportationProps) {
   return (
     <fieldset className="radio-group">
       <legend>

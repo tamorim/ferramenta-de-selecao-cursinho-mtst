@@ -1,4 +1,4 @@
-export default function getFriendlyDuration(duration) {
+export default function getFriendlyDuration(duration: string) {
   if (!duration) {
     return;
   }

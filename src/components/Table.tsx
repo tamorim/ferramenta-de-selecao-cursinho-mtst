@@ -1,11 +1,27 @@
-import { NOT_FOUND, TRANSPORTATIONS } from "../constants";
-import { getFriendlyDistance, getFriendlyDuration } from "../utils";
+import { NOT_FOUND } from "../constants";
+
+type Row = [
+  person: string,
+  address: string,
+  distance: {
+    text: string;
+  },
+  duration: {
+    text: string;
+  },
+];
+
+type TableProps = {
+  rows: Row[];
+  destination: string;
+  transportation: string;
+};
 
 export default function Table({
   rows,
   destination: destinationProp,
   transportation,
-}) {
+}: TableProps) {
   const destination = encodeURIComponent(destinationProp);
 
   return (

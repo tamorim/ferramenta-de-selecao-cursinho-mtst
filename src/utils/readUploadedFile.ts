@@ -1,4 +1,4 @@
-export default function readUploadedFile(file) {
+export default function readUploadedFile(file: Blob) {
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader();
 

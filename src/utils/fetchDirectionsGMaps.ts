@@ -1,13 +1,13 @@
-import { GMAPS_API_TOKEN } from "../constants";
 import Google from "../services/Google";
 
 export default async function fetchDirectionsGMaps(
-  origin,
-  destination,
-  transportation
+  origin: string,
+  destination: string,
+  transportation: string,
 ) {
   const google = await Google();
-  const directionsService = new google.maps.DirectionsService();
+  const directionsService =
+    new google.maps.DirectionsService() as google.maps.DirectionsService;
   const params = {
     origin: { placeId: origin },
     destination: new google.maps.LatLng(destination[1], destination[0]),
@@ -16,9 +16,18 @@ export default async function fetchDirectionsGMaps(
     region: "br",
   };
 
-  const response = await new Promise((resolve) => {
-    directionsService.route(params, (response) => resolve(response));
-  });
+  const response = await new Promise<google.maps.DirectionsResult>(
+    (resolve) => {
+      directionsService.route(params, (response) => {
+        if (!response) {
+          return;
+        }
+
+        resolve(response);
+      });
+    },
+  );
+
   const direction = response?.routes[0]?.legs[0];
 
   if (!direction) {

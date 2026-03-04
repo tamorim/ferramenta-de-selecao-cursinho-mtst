@@ -1,8 +1,14 @@
+type TableInfoProps = {
+  notFoundCoordinatesCount: number;
+  notFoundDirectionsCount: number;
+  onDownload: () => void;
+};
+
 export default function TableInfo({
   notFoundCoordinatesCount,
   notFoundDirectionsCount,
   onDownload,
-}) {
+}: TableInfoProps) {
   return (
     <>
       <div className="table-not-found">

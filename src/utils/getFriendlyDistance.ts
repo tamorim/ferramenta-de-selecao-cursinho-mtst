@@ -1,4 +1,4 @@
-export default function getFriendlyDistance(distance) {
+export default function getFriendlyDistance(distance: string) {
   if (!distance) {
     return;
   }
