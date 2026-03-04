@@ -2,7 +2,7 @@ jobs:
   # Build job
   build:
    # Specify runner +  build & upload the static files as an artifact
-    environment: prod
+    environment: gh-pages
     runs-on: ubuntu-22.04
     steps:
       - name: Build static files
