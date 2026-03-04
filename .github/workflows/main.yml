@@ -5,14 +5,14 @@ jobs:
     environment: gh-pages
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.2
+        
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: 'lts/*'
           cache: 'yarn'
-        
-      - name: Checkout repository
-        uses: actions/checkout@v6.0.2
         
       - name: Build static files
         id: build
