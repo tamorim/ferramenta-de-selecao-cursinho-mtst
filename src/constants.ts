@@ -1,25 +1,29 @@
 export const MAPBOX_API_TOKEN = import.meta.env.VITE_MAPBOX_API_TOKEN;
 export const GMAPS_API_TOKEN = import.meta.env.VITE_GMAPS_API_TOKEN;
 
+export const MAPBOX_DIRECTIONS_API_URL = "https://api.mapbox.com/directions/v5";
+
 export const MAPBOX_GEOCODING_API_URL =
   "https://api.mapbox.com/search/geocode/v6/forward";
-export const MAPBOX_DIRECTIONS_API_URL = "https://api.mapbox.com/directions/v5";
+
 export const GMAPS_GEOCODING_API_URL =
   "https://maps.googleapis.com/maps/api/geocode/json";
+
 export const GMAPS_DIRECTIONS_API_URL =
   "https://maps.googleapis.com/maps/api/directions/json";
 
-export const TRANSPORTATIONS = {
-  WALKING: "WALKING",
-  TRANSIT: "TRANSIT",
-  DRIVING: "DRIVING",
-};
+export enum TRANSPORTATIONS {
+  WALKING = "WALKING",
+  TRANSIT = "TRANSIT",
+  DRIVING = "DRIVING",
+}
 
 export const NOT_FOUND = "Não encontrado";
 export const DEFAULT_PAGE_NAME = "Página 1";
 export const DEFAULT_FILE_NAME = "Planilha ordenada.xlsx";
 
 export const GOOGLE_TERMS_LINK = "https://policies.google.com/terms?hl=pt-br";
+
 export const GOOGLE_PRIVACY_LINK =
   "https://policies.google.com/privacy?hl=pt-br";
 

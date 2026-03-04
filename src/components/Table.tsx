@@ -1,15 +1,6 @@
 import { NOT_FOUND } from "../constants";
 
-type Row = [
-  person: string,
-  address: string,
-  distance: {
-    text: string;
-  },
-  duration: {
-    text: string;
-  },
-];
+import type { Row } from "../types";
 
 type TableProps = {
   rows: Row[];

@@ -32,25 +32,29 @@ import type {
   SearchBoxFeatureSuggestion,
 } from "@mapbox/search-js-core";
 
-type FileWithDirections = Array<
-  [
-    person: string,
-    address: string,
-    distance: google.maps.Distance,
-    duration: google.maps.Duration,
-  ]
->;
+import type { Row } from "./types";
+import type { FetchDirectionsGMapsRoute } from "./utils/fetchDirectionsGMaps";
 
 export default function App() {
   const [search, setSearch] = useState("");
+  const [transportation, setTransportation] = useState<TRANSPORTATIONS>(
+    TRANSPORTATIONS.WALKING,
+  );
+  const [uploadedFile, setUploadedFile] = useState<string[][] | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
+
   const [retrievedSearch, setRetrievedSearch] =
     useState<SearchBoxFeatureSuggestion | null>(null);
-  const [transportation, setTransportation] = useState(TRANSPORTATIONS.WALKING);
-  const [uploadedFile, setUploadedFile] = useState<string[][] | null>(null);
-  const [placeIds, setPlaceIds] = useState<string[]>([]);
-  const [directions, setDirections] = useState<string[]>([]);
-  const [sortedFile, setSortedFile] = useState<FileWithDirections | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [placeIds, setPlaceIds] = useState<
+    (string | undefined)[] | undefined
+  >();
+
+  const [directions, setDirections] = useState<
+    (FetchDirectionsGMapsRoute | undefined)[] | undefined
+  >();
+
+  const [rows, setRows] = useState<Row[] | undefined>();
 
   const notFoundCoordinatesCount =
     placeIds?.filter((placeId, index) => {
@@ -65,8 +69,8 @@ export default function App() {
 
   const notFoundDirectionsCount =
     directions?.filter((direction, index) => {
-      if (!uploadedFile) {
-        return;
+      if (!uploadedFile || !placeIds) {
+        return false;
       }
 
       const [person, address] = uploadedFile[index];
@@ -80,8 +84,9 @@ export default function App() {
   };
 
   const handleTransportationChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTransportation(event.target.value);
+    setTransportation(event.target.value as TRANSPORTATIONS);
   };
+  null;
 
   const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
@@ -92,6 +97,7 @@ export default function App() {
 
     const unparsedFile = await readUploadedFile(files[0]);
     const parsedFile = read(unparsedFile);
+
     const jsonFile = utils.sheet_to_json(
       parsedFile.Sheets[parsedFile.SheetNames[0]],
       { header: 1 },
@@ -101,9 +107,9 @@ export default function App() {
   };
 
   const handleGetDirections = async () => {
-    setPlaceIds([]);
-    setDirections([]);
-    setSortedFile(null);
+    setPlaceIds(undefined);
+    setDirections(undefined);
+    setRows(undefined);
     setIsLoading(true);
 
     if (!uploadedFile) {
@@ -122,29 +128,31 @@ export default function App() {
     );
 
     const retrievedDirections = await Promise.all(
-      retrievedPlaceIds.map(async (placeId) => {
-        if (!placeId) {
-          return;
-        }
+      retrievedPlaceIds.map<Promise<FetchDirectionsGMapsRoute | undefined>>(
+        async (placeId) => {
+          if (!placeId) {
+            return;
+          }
 
-        const response = await fetchDirectionsGMaps(
-          placeId,
-          retrievedSearch.geometry.coordinates,
-          transportation,
-        );
+          const response = await fetchDirectionsGMaps(
+            placeId,
+            retrievedSearch.geometry.coordinates,
+            transportation,
+          );
 
-        return response?.routes?.[0];
-      }),
+          return response?.routes?.[0];
+        },
+      ),
     );
 
     const fileWithDirections = uploadedFile
-      .map(([person, address], index) => {
+      .map<Row>(([person, address], index) => {
         const direction = retrievedDirections[index];
         return [person, address, direction?.distance, direction?.duration];
       })
       .sort((a, b) => {
-        const distanceA = a[2]?.value;
-        const distanceB = b[2]?.value;
+        const distanceA = (a[2] as google.maps.Distance)?.value;
+        const distanceB = (b[2] as google.maps.Distance)?.value;
 
         if ((distanceA && !distanceB) || distanceA < distanceB) {
           return -1;
@@ -154,31 +162,21 @@ export default function App() {
           return 1;
         }
 
-        if ((!distanceA && !distanceB) || distanceA === distanceB) {
-          return 0;
-        }
+        return 0;
       });
 
-    setPlaceIds(
-      retrievedPlaceIds.filter((retrievedPlaceId): retrievedPlaceId is string =>
-        Boolean(retrievedPlaceId),
-      ),
-    );
-
-    setDirections(
-      retrievedDirections.filter(
-        (retrievedDirection): retrievedDirection is google.maps.Distance =>
-          Boolean(retrievedDirection),
-      ),
-    );
-
-    setSortedFile(fileWithDirections);
-
+    setPlaceIds(retrievedPlaceIds);
+    setDirections(retrievedDirections);
+    setRows(fileWithDirections);
     setIsLoading(false);
   };
 
   const handleDownload = () => {
-    const transformedRows = sortedFile
+    if (!rows) {
+      return;
+    }
+
+    const transformedRows = rows
       .map(([person, address, distance, duration]) => {
         return {
           Pessoa: person,
@@ -233,7 +231,7 @@ export default function App() {
 
       {isLoading ? <Spinner /> : null}
 
-      {sortedFile?.length ? (
+      {rows?.length ? (
         <div className="table-container">
           <TableInfo
             notFoundCoordinatesCount={notFoundCoordinatesCount}
@@ -242,7 +240,7 @@ export default function App() {
           />
 
           <Table
-            rows={sortedFile}
+            rows={rows}
             destination={retrievedSearch.properties.full_address}
             transportation={transportation}
           />

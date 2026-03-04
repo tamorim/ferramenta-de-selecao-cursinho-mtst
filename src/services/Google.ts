@@ -9,9 +9,10 @@ const loader = new Loader({
   region: "br",
 });
 
-let google = null;
+let google: Promise<typeof globalThis.google> | null = null;
 
 export default function Google() {
+  // TODO: Update how we load google service
   if (!google) {
     google = loader.load();
   }

@@ -1,10 +1,21 @@
 import Google from "../services/Google";
 
+import type { TRANSPORTATIONS } from "../constants";
+
+export type FetchDirectionsGMapsRoute = {
+  distance?: google.maps.Distance;
+  duration?: google.maps.Duration;
+};
+
+export type FetchDirectionsGMapsReturn =
+  | { routes: FetchDirectionsGMapsRoute[] }
+  | undefined;
+
 export default async function fetchDirectionsGMaps(
   origin: string,
-  destination: string,
-  transportation: string,
-) {
+  destination: [lat: number, long: number],
+  transportation: keyof typeof TRANSPORTATIONS,
+): Promise<FetchDirectionsGMapsReturn> {
   const google = await Google();
   const directionsService =
     new google.maps.DirectionsService() as google.maps.DirectionsService;
