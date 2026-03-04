@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/ferramenta-selecao-cursinho/",
+  base: "/ferramenta-de-selecao-cursinho-mtst/",
   plugins: [react()],
   build: {
     outDir: "build",
