@@ -300,7 +300,7 @@ export default function App() {
 
             <img
               className="powered-by-google-logo"
-              src="/google-maps-logo.svg"
+              src={`${import.meta.env.BASE_URL}google-maps-logo.svg`}
             />
           </p>
         </div>
