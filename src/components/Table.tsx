@@ -1,7 +1,5 @@
 import { NOT_FOUND } from "../constants";
 
-import { ColumnPosition } from "../constants";
-
 import type { Row } from "../types";
 
 type TableProps = {
