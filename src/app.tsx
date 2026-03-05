@@ -83,7 +83,11 @@ export default function App() {
   const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
 
-    if (!files) {
+    if (!files || !files.length) {
+      if (uploadButtonRef.current) {
+        uploadButtonRef.current.value = "";
+      }
+
       return;
     }
 
