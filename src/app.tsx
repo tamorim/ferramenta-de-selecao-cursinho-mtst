@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { SearchBox } from "@mapbox/search-js-react";
 import { read, utils, writeFile } from "xlsx";
 
@@ -42,6 +42,7 @@ export default function App() {
   const [placeIds, setPlaceIds] = useState<(string | undefined)[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [rows, setRows] = useState<Row[]>([]);
+  const uploadButtonRef = useRef<HTMLInputElement>(null);
 
   const [transportation, setTransportation] = useState<TRANSPORTATIONS>(
     TRANSPORTATIONS.WALKING,
@@ -187,6 +188,18 @@ export default function App() {
     writeFile(workbook, DEFAULT_FILE_NAME, { compression: true });
   };
 
+  const handleReset = () => {
+    if (uploadButtonRef.current) {
+      uploadButtonRef.current.value = "";
+    }
+
+    setUploadedFile([]);
+    setPlaceIds([]);
+    setDirections([]);
+    setRows([]);
+    setIsLoading(false);
+  };
+
   return (
     <>
       <h1 className="title">Ordenador de planilha por endereço</h1>
@@ -208,19 +221,30 @@ export default function App() {
 
       <div className="buttons-wrapper">
         <input
+          ref={uploadButtonRef}
           className="upload-button"
           type="file"
           accept=".xls,.xlsx,application/msexcel,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           onChange={handleUpload}
         />
 
-        <button
-          className="calculate-button"
-          disabled={!retrievedSearch || !uploadedFile || isLoading}
-          onClick={handleGetDirections}
-        >
-          Calcular distâncias
-        </button>
+        <div className="calculate-buttons-container">
+          <button
+            className="calculate-button"
+            disabled={!retrievedSearch || !uploadedFile || isLoading}
+            onClick={handleGetDirections}
+          >
+            Calcular distâncias
+          </button>
+
+          <button
+            className="reset-button"
+            disabled={!uploadedFile.length || isLoading}
+            onClick={handleReset}
+          >
+            Limpar
+          </button>
+        </div>
       </div>
 
       {isLoading ? <Spinner /> : null}
