@@ -23,7 +23,8 @@ export default function TableInfo({
         </div>
       </div>
 
-      <div className="download-button-wrapper">
+      {/* TODO: Fix generated sheet */}
+      <div className="download-button-wrapper" style={{ display: "none" }}>
         <button className="download-button" onClick={onDownload}>
           Baixar planilha ordenada
         </button>
