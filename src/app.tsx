@@ -58,17 +58,17 @@ export default function App() {
 
   const notFoundCoordinatesCount =
     placeIds?.filter((placeId, index) => {
-      const [person, address] = uploadedFile[index];
+      const [name, address] = uploadedFile[index];
 
-      return person && address && !placeId;
+      return name && address && !placeId;
     }).length ?? 0;
 
   const notFoundDirectionsCount =
     directions?.filter((direction, index) => {
-      const [person, address] = uploadedFile[index];
+      const [name, address] = uploadedFile[index];
       const placeId = placeIds[index];
 
-      return person && address && placeId && !direction;
+      return name && address && placeId && !direction;
     }).length ?? 0;
 
   const handleSearchRetrieve = (value: SearchBoxRetrieveResponse) => {
@@ -139,15 +139,42 @@ export default function App() {
 
     const fileWithDirections = uploadedFile
       .map<Row>((row, index) => {
-        const person = row[ColumnPosition.NAME];
+        const name = row[ColumnPosition.NAME];
+        const socialName = row[ColumnPosition.SOCIAL_NAME];
+        const hasDisability = row[ColumnPosition.HAS_DISABILITY];
+        const race = row[ColumnPosition.RACE];
+        const income = row[ColumnPosition.INCOME];
+        const education = row[ColumnPosition.EDUCATION];
+        const highschool = row[ColumnPosition.HIGHSCHOOL];
+        const courseLocation = row[ColumnPosition.COURSE_LOCATION];
+        const saturdayAvailability = row[ColumnPosition.SATURDAY_AVAILABILITY];
+        const occupationName = row[ColumnPosition.OCCUPATION_NAME];
         const address = row[ColumnPosition.ADDRESS];
         const direction = retrievedDirections[index];
 
-        return [person, address, direction?.distance, direction?.duration];
+        const isMemberOfOccupation =
+          row[ColumnPosition.IS_MEMBER_OF_OCCUPATION];
+
+        return [
+          name,
+          socialName,
+          hasDisability,
+          race,
+          income,
+          education,
+          highschool,
+          courseLocation,
+          saturdayAvailability,
+          isMemberOfOccupation,
+          occupationName,
+          address,
+          direction?.distance,
+          direction?.duration,
+        ];
       })
       .sort((a, b) => {
-        const distanceA = (a[2] as google.maps.Distance)?.value;
-        const distanceB = (b[2] as google.maps.Distance)?.value;
+        const distanceA = (a[12] as google.maps.Distance)?.value;
+        const distanceB = (b[12] as google.maps.Distance)?.value;
 
         if ((distanceA && !distanceB) || distanceA < distanceB) {
           return -1;
@@ -172,15 +199,20 @@ export default function App() {
     }
 
     const transformedRows = rows
-      .map(([person, address, distance, duration]) => {
+      .map((row) => {
+        const name = row[0];
+        const address = row[11];
+        const distance = row[12];
+        const duration = row[13];
+
         return {
-          Pessoa: person,
+          Nome: name,
           Endereço: address,
           Distância: distance?.text ?? NOT_FOUND,
           Duração: duration?.text ?? NOT_FOUND,
         };
       })
-      .filter(({ Pessoa, Endereço }) => Pessoa && Endereço);
+      .filter(({ Nome, Endereço }) => Nome && Endereço);
 
     const worksheet = utils.json_to_sheet(transformedRows);
     const workbook = utils.book_new();

@@ -33,7 +33,17 @@ export type FileHeaders = [
 ];
 
 export type Row = [
-  person: string,
+  name: string,
+  socialName: string,
+  hasDisability: Disability,
+  race: Race,
+  income: Income,
+  education: Education | string,
+  highschool: Highschool | string,
+  courseLocation: CourseLocation,
+  saturdayAvailability: SaturdayAvailability,
+  isMemberOfOccupation: MemberOfOccupation,
+  occupationName: string,
   address: string,
   distance: google.maps.Distance | undefined,
   duration: google.maps.Duration | undefined,
