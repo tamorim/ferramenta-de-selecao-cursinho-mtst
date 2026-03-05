@@ -27,7 +27,7 @@ export const GOOGLE_TERMS_LINK = "https://policies.google.com/terms?hl=pt-br";
 export const GOOGLE_PRIVACY_LINK =
   "https://policies.google.com/privacy?hl=pt-br";
 
-const tableHeaders = {
+export const tableHeaders = {
   dateTimeStamp: "Carimbo de data/hora",
   email: "Endereço de e-mail",
   name: "Nome completo",
@@ -51,48 +51,54 @@ const tableHeaders = {
   occupationName: "Informe a ocupação na qual você faz sua luta.",
 };
 
-const hasDisabilityValues = ["Sim", "Não"];
+export enum Disability {
+  YES = "Sim",
+  NO = "Não",
+}
 
-const raceValues = [
-  "Preto(a)",
-  "Pardo(a)",
-  "Branco(a)",
-  "Indígena",
-  "Amarelo(a)",
-];
+export enum Race {
+  BLACK = "Preto(a)",
+  BROWN = "Pardo(a)",
+  WHITE = "Branco(a)",
+  NATIVE = "Indígena",
+  YELLOW = "Amarelo(a)",
+}
 
-const incomeValues = [
-  "Até um salário mínimo (R$ 1621,00) por pessoa.",
-  "Acima de um salário mínimo (R$1621,00) por pessoa.",
-];
+export enum Income {
+  MINIMUM_OR_LOWER = "Até um salário mínimo (R$ 1621,00) por pessoa.",
+  ABOVE_MINIMUM = "Acima de um salário mínimo (R$1621,00) por pessoa.",
+}
 
-const educationValues = [
-  "Cursando 1º ano do Ensino Médio",
-  "Cursando 2º ano do Ensino Médio",
-  "Cursando 3º ano do Ensino Médio",
-  "Ensino Médio completo",
-  "<open-string>",
-];
+// Open string is possible
+export enum Education {
+  FIRST_YEAR = "Cursando 1º ano do Ensino Médio",
+  SECOND_YEAR = "Cursando 2º ano do Ensino Médio",
+  THIRD_YEAR = "Cursando 3º ano do Ensino Médio",
+  FINISHED = "Ensino Médio completo",
+}
 
-const highschoolValues = [
-  "Integralmente em escola pública.",
-  "Integralmente em escola particular.",
-  "Parte em escola pública, parte em escola particular.",
-  "<open-string>",
-];
+// Open string is possible
+export enum Highschool {
+  PUBLIC = "Integralmente em escola pública.",
+  PRIVATE = "Integralmente em escola particular.",
+  HALF = "Parte em escola pública, parte em escola particular.",
+}
 
-const courseLocationValues = [
-  "Antonieta de Barros (Cidade Dutra/Interlagos)",
-  "Esperança Garcia (Campo Limpo)",
-  "Maria Firmina dos Reis (Cidade Ademar)",
-  "Tereza de Benguela (José Bonifácio)",
-];
+export enum CourseLocation {
+  INTERLAGOS = "Antonieta de Barros (Cidade Dutra/Interlagos)",
+  CAMPO_LIMPO = "Esperança Garcia (Campo Limpo)",
+  CIDADE_ADEMAR = "Maria Firmina dos Reis (Cidade Ademar)",
+  JOSE_BONIFACIO = "Tereza de Benguela (José Bonifácio)",
+}
 
-const saturdayAvailabilityValues = [
-  "Manhã e tarde",
-  "Apenas pela manhã",
-  "Apenas à tarde",
-  "Não tenho disponibilidade aos sábados",
-];
+export enum SaturdayAvailability {
+  BOTH = "Manhã e tarde",
+  MORNING = "Apenas pela manhã",
+  AFTERNOON = "Apenas à tarde",
+  NONE = "Não tenho disponibilidade aos sábados",
+}
 
-const isMemberOfOccupationValues = ["Sim", "Não"];
+export enum MemberOfOccupation {
+  YES = "Sim",
+  NO = "Não",
+}

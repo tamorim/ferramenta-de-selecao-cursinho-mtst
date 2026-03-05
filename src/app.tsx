@@ -32,7 +32,7 @@ import type {
   SearchBoxFeatureSuggestion,
 } from "@mapbox/search-js-core";
 
-import type { Row } from "./types";
+import type { FileHeaders, Row } from "./types";
 import type { FetchDirectionsGMapsRoute } from "./utils/fetchDirectionsGMaps";
 
 export default function App() {
@@ -40,7 +40,7 @@ export default function App() {
   const [transportation, setTransportation] = useState<TRANSPORTATIONS>(
     TRANSPORTATIONS.WALKING,
   );
-  const [uploadedFile, setUploadedFile] = useState<string[][] | undefined>();
+  const [uploadedFile, setUploadedFile] = useState<FileHeaders[] | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
   const [retrievedSearch, setRetrievedSearch] =
@@ -100,8 +100,8 @@ export default function App() {
 
     const jsonFile = utils.sheet_to_json(
       parsedFile.Sheets[parsedFile.SheetNames[0]],
-      { header: 1 },
-    ) as string[][];
+      { header: 1, defval: null },
+    ) as FileHeaders[];
 
     setUploadedFile(jsonFile.slice(1));
   };
@@ -146,8 +146,11 @@ export default function App() {
     );
 
     const fileWithDirections = uploadedFile
-      .map<Row>(([person, address], index) => {
+      .map<Row>((row, index) => {
+        const person = row[2];
+        const address = row[13];
         const direction = retrievedDirections[index];
+
         return [person, address, direction?.distance, direction?.duration];
       })
       .sort((a, b) => {
