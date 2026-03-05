@@ -296,8 +296,12 @@ export default function App() {
           />
 
           <p className="powered-by-google">
-            Powered by{" "}
-            <img src="https://cdn.glitch.global/1e6131d5-39ad-425c-8590-0ec8aa67c53f/google_logo.png?v=1740154927550" />
+            <span className="powered-by-google-text">Powered by</span>
+
+            <img
+              className="powered-by-google-logo"
+              src="/google-maps-logo.svg"
+            />
           </p>
         </div>
       ) : null}

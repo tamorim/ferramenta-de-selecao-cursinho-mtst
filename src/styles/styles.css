@@ -232,13 +232,17 @@ table > tbody > tr:hover {
   display: flex;
   font-size: 0.9rem;
   font-weight: bold;
-  gap: 0.25rem;
+  gap: 0.3rem;
   line-height: 1;
   margin: 0;
   width: 100%;
 }
 
-.powered-by-google > img {
+.powered-by-google-text {
+  padding-top: 0.22rem;
+}
+
+.powered-by-google-logo {
   position: relative;
   top: 0.1rem;
 }
