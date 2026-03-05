@@ -102,3 +102,26 @@ export enum MemberOfOccupation {
   YES = "Sim",
   NO = "Não",
 }
+
+export enum ColumnPosition {
+  DATE_TIME_STAMP = 0,
+  EMAIL = 1,
+  NAME = 2,
+  SOCIAL_NAME = 3,
+  CPF = 4,
+  RG = 5,
+  BIRTH_DATE = 6,
+  HAS_DISABILITY = 7,
+  RACE = 8,
+  INCOME = 9,
+  EDUCATION = 10,
+  HIGHSCHOOL = 11,
+  SCHOOL_NAME = 12,
+  ADDRESS = 13,
+  ZIP_CODE = 14,
+  WHATS_APP = 15,
+  COURSE_LOCATION = 16,
+  SATURDAY_AVAILABILITY = 17,
+  IS_MEMBER_OFOCCUPATION = 18,
+  OCCUPATIONNAME = 19,
+}

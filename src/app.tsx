@@ -10,6 +10,7 @@ import {
   NOT_FOUND,
   DEFAULT_PAGE_NAME,
   DEFAULT_FILE_NAME,
+  ColumnPosition,
 } from "./constants";
 
 import {
@@ -37,31 +38,25 @@ import type { FetchDirectionsGMapsRoute } from "./utils/fetchDirectionsGMaps";
 
 export default function App() {
   const [search, setSearch] = useState("");
+  const [uploadedFile, setUploadedFile] = useState<FileHeaders[]>([]);
+  const [placeIds, setPlaceIds] = useState<(string | undefined)[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [rows, setRows] = useState<Row[]>([]);
+
   const [transportation, setTransportation] = useState<TRANSPORTATIONS>(
     TRANSPORTATIONS.WALKING,
   );
-  const [uploadedFile, setUploadedFile] = useState<FileHeaders[] | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
 
-  const [retrievedSearch, setRetrievedSearch] =
-    useState<SearchBoxFeatureSuggestion | null>(null);
-
-  const [placeIds, setPlaceIds] = useState<
-    (string | undefined)[] | undefined
+  const [retrievedSearch, setRetrievedSearch] = useState<
+    SearchBoxFeatureSuggestion | undefined
   >();
 
   const [directions, setDirections] = useState<
-    (FetchDirectionsGMapsRoute | undefined)[] | undefined
-  >();
-
-  const [rows, setRows] = useState<Row[] | undefined>();
+    (FetchDirectionsGMapsRoute | undefined)[]
+  >([]);
 
   const notFoundCoordinatesCount =
     placeIds?.filter((placeId, index) => {
-      if (!uploadedFile) {
-        return;
-      }
-
       const [person, address] = uploadedFile[index];
 
       return person && address && !placeId;
@@ -69,10 +64,6 @@ export default function App() {
 
   const notFoundDirectionsCount =
     directions?.filter((direction, index) => {
-      if (!uploadedFile || !placeIds) {
-        return false;
-      }
-
       const [person, address] = uploadedFile[index];
       const placeId = placeIds[index];
 
@@ -107,9 +98,9 @@ export default function App() {
   };
 
   const handleGetDirections = async () => {
-    setPlaceIds(undefined);
-    setDirections(undefined);
-    setRows(undefined);
+    setPlaceIds([]);
+    setDirections([]);
+    setRows([]);
     setIsLoading(true);
 
     if (!uploadedFile) {
@@ -118,7 +109,7 @@ export default function App() {
 
     const retrievedPlaceIds = await Promise.all(
       uploadedFile.map(async (row) => {
-        const [address] = row;
+        const address = row[ColumnPosition.ADDRESS];
         if (!address) {
           return;
         }
@@ -147,8 +138,8 @@ export default function App() {
 
     const fileWithDirections = uploadedFile
       .map<Row>((row, index) => {
-        const person = row[2];
-        const address = row[13];
+        const person = row[ColumnPosition.NAME];
+        const address = row[ColumnPosition.ADDRESS];
         const direction = retrievedDirections[index];
 
         return [person, address, direction?.distance, direction?.duration];
