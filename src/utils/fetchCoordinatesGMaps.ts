@@ -7,16 +7,10 @@ export default async function fetchCoordinatesGMaps(address: string) {
     map,
   ) as google.maps.places.PlacesService;
 
-  const params = { query: address, fields: ["place_id"] };
-  const results = await new Promise<google.maps.places.PlaceResult[]>(
+  const params = { query: `${address}`, fields: ["place_id"] };
+  const results = await new Promise<google.maps.places.PlaceResult[] | null>(
     (resolve) => {
-      placesService.findPlaceFromQuery(params, (results) => {
-        if (!results) {
-          return;
-        }
-
-        resolve(results);
-      });
+      placesService.findPlaceFromQuery(params, resolve);
     },
   );
 
